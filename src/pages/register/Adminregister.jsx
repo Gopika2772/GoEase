@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-export default function Adminregister() {
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+export default function Register() {
+  const navigate = useNavigate();
+  const [error, setError] = useState(null);
+
+
   const [formData, setFormData] = useState({
     userName: '',
     email: '',
@@ -14,19 +19,24 @@ export default function Adminregister() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    window.sessionStorage.setItem('userData', JSON.stringify(formData));
-
-    setFormData({
-      userName: '',
-      email: '',
-      password: '',
-    });
-
-    
+  
+    try {
+     
+      const response = await axios.post(`${baseurl}/adminregister`, formData);
+      const userData = response.data; 
+      window.sessionStorage.setItem('userData', JSON.stringify(userData)); 
+      if (userData.isAdmin) {
+        // navigate('/adminregister'); 
+        navigate('/adminlogin'); 
+      }
+    } catch (err) {
+      setError(err.response.data);
+    }
   };
+  
+
 
   return (
     <>
@@ -35,7 +45,7 @@ export default function Adminregister() {
           <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
             <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
               <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-                Create an Admin account
+                Create an admin account
               </h1>
               <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit} action="#">
                 <div>
@@ -87,21 +97,21 @@ export default function Adminregister() {
                       required
                     />
                   </div>
-                  <div className="ml-3 text-sm">
+                  {/* <div className="ml-3 text-sm">
                     <label htmlFor="terms" className="font-light text-gray-500 dark:text-gray-300">
                       I accept the <a className="font-medium text-primary-600 hover:underline dark:text-primary-500" href="#">Terms and Conditions</a>
                     </label>
-                  </div>
+                  </div> */}
                 </div>
                 <button
                   type="submit"
                   className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                 >
-                  <Link to="/addflights">Create an account</Link>
+                  Create an  admin account
                 </button>
                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-          Already have an account? <Link to="/adminlogin" className="font-medium text-primary-600 hover:underline dark:text-primary-500">Login here</Link>
-        </p>
+                  Already have an account? <Link to="/login" className="font-medium text-primary-600 hover:underline dark:text-primary-500">Login here</Link>
+                </p>
               </form>
             </div>
           </div>

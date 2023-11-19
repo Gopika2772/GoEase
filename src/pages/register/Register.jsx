@@ -23,7 +23,7 @@ export default function Register() {
     e.preventDefault();
 
     try {
-        const response = await axios.post('http://localhost:8080/register', formData);
+        const response = await axios.post(`${baseurl}/register`, formData);
         console.log(response.data);
         const userData = response.data;
         window.sessionStorage.setItem('userData', JSON.stringify(userData));
