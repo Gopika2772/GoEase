@@ -40,49 +40,6 @@ const superAdminLogin = (req, res) => {
 };
 
 
-// const addSuperAdmin = (req, res) => {
-
-//     const q =
-//         "INSERT INTO superadmin(`superAdminName`,`email`,`password`) VALUES (?)";
-
-//     const values = [
-//         req.body.superAdminName,
-//         req.body.email,
-//         req.body.password,
-//     ];
-//     db.query(q, [values], (err, data) => {
-//         if (err) {
-//             console.log(err);
-//             return res.status(500).json(err);
-//         } else {
-//             return res.json("super admin added");
-//         }
-//     });
-// };
-
-// const updateSuperAdmin = (req, res) => {
-
-//     const q =
-//         "UPDATE superadmin SET `superAdminName`=?,`email`=?,`password`=?";
-
-//     const values = [req.body.superAdminName, req.body.email, req.body.password];
-
-//     db.query(q, [values], (err, data) => {
-//         if (err) return res.status(500).json(err);
-//         return res.json("Super Admin details updated.");
-//     });
-// };
-
-// const deleteSuperAdmin = (req, res) => {
-//     const q = "DELETE FROM superadmin WHERE `superAdminName` = ?";
-
-//     db.query(q, [req.body.superAdminName], (err, data) => {
-//         if (err) return res.status(403).json("Super Admin not deleted");
-
-//         return res.json("Super Admin deleted");
-//     });
-
-// };
 
 const addAdmin = (req, res) => {
 

@@ -1,6 +1,5 @@
-// const { addAdmin, updateAdmin, deleteAdmin } = require("../controllers/admin.auth.contollers");
-const { superAdminLogin, superAdminRegister, addAdmin, updateAdmin, deleteAdmin } = require("../controllers/superAdmin.controllers")
 
+const { superAdminLogin, superAdminRegister, addAdmin, updateAdmin, deleteAdmin } = require("../controllers/superAdmin.controllers")
 const express = require("express");
 const router = express.Router();
 
