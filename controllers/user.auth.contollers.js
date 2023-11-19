@@ -113,6 +113,7 @@ const searchFlights = (req, res) => {
             flightDate: flight.date,
             flightFrom: flight.fromDestination,
             flightTo: flight.toDestination,
+            flightTime:flight.time
         }));
 
         return res.status(200).json(simplifiedData);
@@ -128,6 +129,7 @@ const bookTicket = (req, res) => {
 
     db.query(qCheckSeats, valuesCheckSeats, (err, seatData) => {
         if (err) {
+            console.log(err);
             return res.status(500).json(err);
         }
 
@@ -149,13 +151,15 @@ const bookTicket = (req, res) => {
 
         db.query(qBookTicket, valuesBookTicket, (err, bookingData) => {
             if (err) {
+                console.log(err);
                 return res.status(500).json(err);
             }
 
 
-            db.query(qUpdateSeats, valuesUpdateSeats, (err, updateData) => {
-                if (err) {
-                    return res.status(500).json(err);
+            db.query(qUpdateSeats, valuesUpdateSeats, (error, updateData) => {
+                if (error) {
+                    console.log(error);
+                    return res.status(500).json(error);
                 }
 
                 return res.status(200).json("Ticket booked successfully.");

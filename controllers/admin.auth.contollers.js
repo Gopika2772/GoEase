@@ -104,7 +104,7 @@ const adminLogin = (req, res) => {
 // };
 const addFlight = (req, res) => {
     const q = "INSERT INTO flights ( `flightName`, `fromDestination`, `toDestination`, `noOfSeats`, `date`,`time`) VALUES ( ?, ?, ?, ?, ?,?)";
-console.log(req.body);
+    console.log(req.body);
     const maxSeatsPerFlight = 60;
 
     const values = [
@@ -127,6 +127,25 @@ console.log(req.body);
     });
 };
 
+const viewBookings = (req, res) => {
+    const flightNameFilter = req.query.flightName;
+
+    let q = "SELECT * FROM bookings where flighName=?";
+    db.query(q, [flightNameFilter], (err, data) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).json(err);
+        }
+
+        if (data.length === 0) {
+            return res.status(404).json("No bookings found for the given flight name.");
+        }
+
+        return res.status(200).json(data);
+    });
+};
 
 
-module.exports = { adminRegister, adminLogin, addFlight }
+
+
+module.exports = { adminRegister, adminLogin, addFlight, viewBookings }
