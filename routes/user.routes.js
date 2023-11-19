@@ -1,9 +1,12 @@
-// const express = require("express");
-// const { register, login } = require("../controllers/user.auth.contollers");
+const express = require("express");
+const { userLogin ,userRegister,searchFlightsByDate,bookTicket,searchFlights} = require("../controllers/user.auth.contollers");
 
-// const router = express.Router();
+const router = express.Router();
 
-// router.get("/login", login);
-// router.post("/register", register);
+router.get("/login", userLogin);
+router.post("/register", userRegister);
+router.get("/searchFlightsByDate", searchFlightsByDate);
+router.get("/searchFlights", searchFlights);
+router.post("/bookTicket", bookTicket);
 
-// module.exports = router;
+module.exports = router;

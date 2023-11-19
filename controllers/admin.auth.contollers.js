@@ -87,4 +87,46 @@ const adminLogin = (req, res) => {
 
 // };
 
-module.exports = { adminRegister, adminLogin }
+// const addFlight = (req, res) => {
+//     const q = "INSERT INTO flights (`flightId`, `flightName`, `date`) VALUES (?, ?, ?)";
+
+
+//     const values = [req.body.flightId, req.body.flightName, req.body.date];
+
+
+//     db.query(q, values, (err, data) => {
+//         if (err) {
+//             return res.status(500).json(err);
+//         }
+
+//         return res.status(200).json("Flight added successfully.");
+//     });
+// };
+const addFlight = (req, res) => {
+    const q = "INSERT INTO flights ( `flightName`, `fromDestination`, `toDestination`, `noOfSeats`, `date`,`time`) VALUES ( ?, ?, ?, ?, ?,?)";
+console.log(req.body);
+    const maxSeatsPerFlight = 60;
+
+    const values = [
+        req.body.flightName,
+        req.body.fromDestination,
+        req.body.toDestination,
+        60,
+        req.body.date,
+        req.body.time
+    ];
+
+    db.query(q, values, (err, data) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).json(err);
+
+        }
+
+        return res.status(200).json("Flight added successfully.");
+    });
+};
+
+
+
+module.exports = { adminRegister, adminLogin, addFlight }
