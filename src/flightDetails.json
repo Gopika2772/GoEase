@@ -1,0 +1,10 @@
+[
+    {
+      "flightName": "Flight 1",
+      "dateAndTime": "2023-12-01 10:30 AM",
+      "from": "City A",
+      "to": "City B",
+      "ratePerPerson": "$200"
+    }
+  ]
+  
