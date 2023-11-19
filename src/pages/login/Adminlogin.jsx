@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { baseurl } from '../../util';
 
-const Login = () => {
+const Adminlogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
@@ -17,7 +17,7 @@ const Login = () => {
     };
 
     window.sessionStorage.setItem('userData', JSON.stringify(userData));
-    navigate('/landing');
+    navigate('/addflights');
   };
 
   return (
@@ -27,7 +27,7 @@ const Login = () => {
           <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
             <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
               <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-                Login
+                Admin Login
               </h1>
               <form className="space-y-4 md:space-y-6" onSubmit={handleLogin}>
                 <div>
@@ -69,7 +69,7 @@ const Login = () => {
                 </button>
 
                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                  Don't have an account? <Link to="/register" className="font-medium text-primary-600 hover:underline dark:text-primary-500">Register here</Link>
+                  Don't have an account? <Link to="/adminregister" className="font-medium text-primary-600 hover:underline dark:text-primary-500">Register here</Link>
                 </p>
               </form>
             </div>
@@ -80,5 +80,5 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Adminlogin;
 
