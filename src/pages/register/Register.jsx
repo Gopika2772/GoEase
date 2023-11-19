@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 export default function Register() {
+  const navigate = useNavigate();
+  const [error, setError] = useState(null);
+
+
   const [formData, setFormData] = useState({
     userName: '',
     email: '',
@@ -14,19 +19,21 @@ export default function Register() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    window.sessionStorage.setItem('userData', JSON.stringify(formData));
+    try {
+        const response = await axios.post('http://localhost:8080/register', formData);
+        console.log(response.data);
+        const userData = response.data;
+        window.sessionStorage.setItem('userData', JSON.stringify(userData));
+        navigate('/login');
+    } catch (err) {
+        console.error(err.response.data);
+        setError(err.response.data);
+    }
+};
 
-    setFormData({
-      userName: '',
-      email: '',
-      password: '',
-    });
-
-    
-  };
 
   return (
     <>
@@ -100,8 +107,8 @@ export default function Register() {
                   Create an account
                 </button>
                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-          Already have an account? <Link to="/login" className="font-medium text-primary-600 hover:underline dark:text-primary-500">Login here</Link>
-        </p>
+                  Already have an account? <Link to="/login" className="font-medium text-primary-600 hover:underline dark:text-primary-500">Login here</Link>
+                </p>
               </form>
             </div>
           </div>

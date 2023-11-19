@@ -60,7 +60,8 @@ const Flights = ({data,ticket}) => {
     fromDestination:flight.flightFrom,
     toDestination:flight.flightTo,
     noOfSeats:ticket,
-    date:flight.flightDate.slice(0,10)
+    date:flight.flightDate.slice(0,10),
+    flightName:flight.flightName
    }) .then((res) => {
     console.log(res);
     success();
