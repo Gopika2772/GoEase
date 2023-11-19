@@ -14,8 +14,8 @@ const Landing = () => {
     const [result, setResult] = useState(false);
     const [data, setData] = useState([]);
 
-    const fromOptions = ['chennai', 'coimbatore', 'City3', 'City4'];
-    const toOptions = ['coimbatore', 'City2', 'City3', 'City4'];
+    const fromOptions = ['chennai', 'coimbatore', 'Bangalore', 'City4'];
+    const toOptions = ['coimbatore', 'Hyderabad', 'City3', 'City4'];
     const ticketOptions = Array.from({ length: 60 }, (_, index) => index + 1);
 
     const navigate = useNavigate();

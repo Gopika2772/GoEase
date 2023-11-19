@@ -9,14 +9,42 @@ import { baseurl } from '../../util';
 const Flights = ({data,ticket}) => {
   const navigate = useNavigate();
 
-  const submit = (msg) => {
+  const success = () => {
+    confirmAlert({
+      title: 'Confirmation',
+      message: 'Flight has been added successfully',
+      buttons: [
+        {
+          label: 'Ok',
+          onClick: onclose
+        },
+        
+      ]
+    });
+  }; 
+
+  const error = () => {
+    confirmAlert({
+      title: 'Error',
+      message: 'Error!occurred while adding the flight Try again',
+      buttons: [
+        {
+          label: 'Ok',
+          onClick: onclose
+        },
+        
+      ]
+    });
+  }; 
+
+  const submit = (flight) => {
     confirmAlert({
       title: 'Confirm to submit',
-      message: `Are You Sure You Want to Book${msg}`,
+      message: `Are You Sure You Want to Book${flight.flightName}`,
       buttons: [
         {
           label: 'Yes',
-          onClick: () => alert('Click Yes')
+          onClick: () => handleBookFlight(flight)
         },
         {
           label: 'No',
@@ -33,11 +61,13 @@ const Flights = ({data,ticket}) => {
     fromDestination:flight.flightFrom,
     toDestination:flight.flightTo,
     noOfSeats:ticket,
-    date:flight.flightDate
+    date:flight.flightDate.slice(0,10)
    }) .then((res) => {
     console.log(res);
+    success();
 }).catch((err) => {
     console.log(err);
+    error();
 
 })
   };
@@ -46,16 +76,20 @@ const Flights = ({data,ticket}) => {
 
   return (
     <div className="flex items-center justify-center h-screen bg-sky-200">
-      <div className="bg-white w-5/6 h-1/5 rounded-lg p-4 flex">
+      <div className="bg-white w-5/6 h-1/5 rounded-lg p-4 flex flex-col h-auto">
         {data.map((flight, index) => (
-          <div key={index} className="flex flex-row p-4 w-full border border-gray-300 rounded-lg mx-2  items-center justify-evenly">
+          <div key={index} className="flex flex-row p-4 w-full border border-gray-300 rounded-lg m-2   items-center justify-evenly">
             <div className="flex flex-col">
             <div className='text-2xl font-bold mb-2'>Flight Name</div>
             <div>{flight.flightName}</div>
             </div>
             <div className="flex flex-col">
-            <div className='text-2xl font-bold mb-2'>Date and Time</div>
-            <div>{flight.flightDate}</div>
+            <div className='text-2xl font-bold mb-2'>Date</div>
+            <div>{flight.flightDate.slice(0,10)}</div>
+            </div>
+            <div className="flex flex-col">
+            <div className='text-2xl font-bold mb-2'>Time</div>
+            <div>{flight.flightTime}</div>
             </div>
             <div className="flex flex-col">
             <div className='text-2xl font-bold mb-2'>From</div>
@@ -72,7 +106,7 @@ const Flights = ({data,ticket}) => {
             
             <div>
               <button
-                onClick={() => handleBookFlight(flight)}
+                onClick={() => submit(flight)}
                 className="bg-green-500 text-white px-4 py-2 rounded-full focus:outline-none mt-4"
               >
                 Book
