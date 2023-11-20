@@ -25,26 +25,37 @@ const bcrypt = require("bcrypt");
 const userRegister = (req, res) => {
     var q = "SELECT * FROM user WHERE username = ? OR email = ?";
 
-    db.query(q, [req.body.username, req.body.email], (err, data) => {
-        if (err) return res.status(500).json(err);
-        if (data.length) return res.status(409).json("User already exists!");
+    db.query(q, [req.body.userName, req.body.email], (err, data) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: "Internal Server Error" });
+        }
+
+        if (data.length) {
+            return res.status(409).json("User already exists!");
+        }
 
         const salt = bcrypt.genSaltSync(10);
         const hash = bcrypt.hashSync(req.body.password, salt);
 
-        q = "INSERT INTO user (`userId`, `username`, `email`, `password`) VALUES (?, ?, ?, ?)";
-        const values = [req.body.username, req.body.email, hash];
+        q = "INSERT INTO user (`username`, `email`, `password`) VALUES (?)";
+        const values = [req.body.userName, req.body.email, hash];
+
 
         db.query(q, [values], (err, data) => {
-            if (err) return res.status(500).json(err);
+            if (err) {
+                console.error(err);
+                return res.status(500).json({ error: "Internal Server Error" });
+            }
             return res.status(200).json("User has been created.");
         });
     });
 };
 
+
 const userLogin = (req, res) => {
-    const query = "SELECT * FROM  user WHERE email=? "
-    db.query(q, [req.body.username], (err, data) => {
+    const q = "SELECT * FROM  user WHERE email=? "
+    db.query(q, [req.body.email], (err, data) => {
         if (err) return res.status(500).json(err);
         if (data.length === 0) return res.status(404).json("User not found!");
 
@@ -54,8 +65,11 @@ const userLogin = (req, res) => {
             data[0].password
         );
 
-        if (!isPasswordCorrect)
+        if (!isPasswordCorrect) {
             return res.status(400).json("Wrong username or password!");
+        } else if (isPasswordCorrect) {
+            return res.status(200).json(data)
+        }
     });
 };
 
@@ -90,13 +104,13 @@ const searchFlights = (req, res) => {
 
     const q = "SELECT * FROM flights WHERE date = ? AND fromDestination = ? AND toDestination = ? ";
 
-// console.log("running");
+    // console.log("running");
     const date = req.query.date;
     const from = req.query.fromDestination;
     const to = req.query.toDestination;
 
 
-    db.query(q, [date,from,to], (err, data) => {
+    db.query(q, [date, from, to], (err, data) => {
         if (err) {
             return res.status(500).json(err);
         }
@@ -113,7 +127,7 @@ const searchFlights = (req, res) => {
             flightDate: flight.date,
             flightFrom: flight.fromDestination,
             flightTo: flight.toDestination,
-            flightTime:flight.time
+            flightTime: flight.time
         }));
 
         return res.status(200).json(simplifiedData);
@@ -122,7 +136,7 @@ const searchFlights = (req, res) => {
 
 const bookTicket = (req, res) => {
     const qCheckSeats = "SELECT noOfSeats FROM flights WHERE flightId = ?";
-    const qBookTicket = "INSERT INTO bookings (`userId`, `flightId`, `fromDestination`, `toDestination`, `noOfSeats`, `date`) VALUES (?, ?, ?, ?, ?, ?)";
+    const qBookTicket = "INSERT INTO bookings (`userId`, `flightId`, `fromDestination`, `toDestination`, `noOfSeats`, `date`,`flightName`) VALUES (?, ?, ?, ?, ?, ?,?)";
     const qUpdateSeats = "UPDATE flights SET noOfSeats = ? WHERE flightId = ?";
 
     const valuesCheckSeats = [req.body.flightId];
@@ -144,7 +158,8 @@ const bookTicket = (req, res) => {
             req.body.fromDestination,
             req.body.toDestination,
             req.body.noOfSeats,
-            req.body.date
+            req.body.date,
+            req.body.flightName
         ];
 
         const valuesUpdateSeats = [updatedSeats, req.body.flightId];
@@ -172,4 +187,4 @@ const bookTicket = (req, res) => {
 
 
 
-module.exports = { userRegister, userLogin, searchFlightsByDate, bookTicket,searchFlights }
+module.exports = { userRegister, userLogin, searchFlightsByDate, bookTicket, searchFlights }

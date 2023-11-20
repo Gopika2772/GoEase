@@ -3,7 +3,7 @@ const { userLogin ,userRegister,searchFlightsByDate,bookTicket,searchFlights} = 
 
 const router = express.Router();
 
-router.get("/login", userLogin);
+router.post("/login", userLogin);
 router.post("/register", userRegister);
 router.get("/searchFlightsByDate", searchFlightsByDate);
 router.get("/searchFlights", searchFlights);

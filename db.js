@@ -6,3 +6,12 @@ const db = mysql.createConnection({
     password: "klNXyWBBiAHCtO7HbZwm",
 });
 module.exports = db
+
+// const mysql = require("mysql2");
+// const db = mysql.createConnection({
+//     host: "localhost",
+//     database: "flightReservation",
+//     user: "root",
+//     password: "Gopika01#",
+// });
+// module.exports = db

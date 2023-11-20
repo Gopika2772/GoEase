@@ -1,31 +1,43 @@
+const { log } = require("console");
 const db = require("../db");
 const bcrypt = require("bcrypt");
 
 
 const adminRegister = (req, res) => {
-    var q = "SELECT * FROM admin WHERE email = ? OR adminName = ? OR adminId=?";
+    var q = "SELECT * FROM admin WHERE email = ? OR adminName = ? ";
 
-    db.query(q, [req.body.email, req.body.adminName, req.body.adminId], (err, data) => {
-        if (err) return res.status(500).json(err);
-        if (data.length) return res.status(409).json("Admin already exists!");
+    db.query(q, [req.body.email, req.body.adminName, req.body.password], (err, data) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json(err);
+        }
+        if (data.length!=0) {
+            console.log(err);
+            return res.status(409).json("Admin already exists!");}
 
 
         const salt = bcrypt.genSaltSync(10);
         const hash = bcrypt.hashSync(req.body.password, salt);
 
-        q = "INSERT INTO admin(`adminId`,`adminName`,`email`,`password`) VALUES (?)";
-        const values = [req.body.adminId, req.body.adminName, req.body.email, hash];
+        q = "INSERT INTO admin(`adminName`,`email`,`password`) VALUES (?)";
+        const values = [req.body.adminName, req.body.email, hash];
 
         db.query(q, [values], (err, data) => {
-            if (err) return res.status(500).json(err);
+            if (err) {
+                console.error(err);
+                return res.status(500).json(err);
+            }
             return res.status(200).json("Admin Authorized.");
         });
     });
 }
 const adminLogin = (req, res) => {
-    const query = "SELECT * FROM  admin WHERE adminId=? OR adminName=? "
-    db.query(q, [req.body.adminName, req.body.adminId], (err, data) => {
-        if (err) return res.status(500).json(err);
+    const query = "SELECT * FROM  admin WHERE adminName=? OR email=? "
+    db.query(q, [req.body.email, req.body.password], (err, data) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).json(err);
+        }
         if (data.length === 0) return res.status(404).json("Admin not found!");
 
         const isPasswordCorrect = bcrypt.compareSync(
@@ -36,8 +48,11 @@ const adminLogin = (req, res) => {
             res.status(200).json("Admin Logged in");
         }
 
-        if (!isPasswordCorrect)
+        if (!isPasswordCorrect){
+            console.log(err);
             return res.status(400).json("Wrong  Admin username or password!");
+
+        }
     });
 };
 
@@ -129,8 +144,9 @@ const addFlight = (req, res) => {
 
 const viewBookings = (req, res) => {
     const flightNameFilter = req.query.flightName;
+    
 
-    let q = "SELECT * FROM bookings where flighName=?";
+    let q = "SELECT * FROM bookings where flightName=?";
     db.query(q, [flightNameFilter], (err, data) => {
         if (err) {
             console.log(err);
