@@ -10,29 +10,18 @@ const Adminlogin = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
-    try {
-      
-      const response = await axios.post(`${baseurl}/adminlogin`, {
-        email: email,
-        password: password,
-      });
-
-      const userData = response.data;
-
-      
-      window.sessionStorage.setItem('userData', JSON.stringify(userData));
-
-      
-      if (userData.isAdmin) {
-        navigate('/addflights'); 
-        
-      }
-    } catch (err) {
-      console.error(err.response.data);
-    }
+    axios.post(`${baseurl}/adminlogin`, {
+      email: email,
+      password: password,
+    }).then((res) => {
+      console.log(res.data[0]);
+      window.sessionStorage.setItem('userData', JSON.stringify(res.data[0]));
+      navigate('/landing');
+    }).catch((err) => {
+      console.log(err);
+    })
   };
-  
+
 
   return (
     <>

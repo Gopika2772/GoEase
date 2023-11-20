@@ -9,7 +9,7 @@ export default function Register() {
 
 
   const [formData, setFormData] = useState({
-    userName: '',
+    adminName: '',
     email: '',
     password: '',
   });
@@ -23,19 +23,16 @@ export default function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    try {
-     
-      const response = await axios.post(`${baseurl}/adminregister`, formData);
-      const userData = response.data; 
-      window.sessionStorage.setItem('userData', JSON.stringify(userData)); 
-      if (userData.isAdmin) {
-        // navigate('/adminregister'); 
-        navigate('/adminlogin'); 
-      }
-    } catch (err) {
-      setError(err.response.data);
-    }
+
+    axios.post(`${baseurl}/adminregister`, {
+      adminName: formData.adminName,
+      email: formData.email,
+      password: formData.password
+    }).then((res)=>{
+      console.log(res);
+    }).catch((err)=>{
+      console.log(err);
+    })
   };
   
 
@@ -51,12 +48,12 @@ export default function Register() {
               </h1>
               <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit} action="#">
                 <div>
-                  <label htmlFor="userName" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your Name</label>
+                  <label htmlFor="adminName" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your Name</label>
                   <input
                     type="text"
-                    name="userName"
-                    id="userName"
-                    value={formData.userName}
+                    name="adminName"
+                    id="adminName"
+                    value={formData.adminName}
                     onChange={handleChange}
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Your Name"
@@ -90,7 +87,7 @@ export default function Register() {
                   />
                 </div>
                 <div className="flex items-start">
-                  <div className="flex items-center h-5">
+                  {/* <div className="flex items-center h-5">
                     <input
                       id="terms"
                       aria-describedby="terms"
@@ -98,7 +95,7 @@ export default function Register() {
                       className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
                       required
                     />
-                  </div>
+                  </div> */}
                   {/* <div className="ml-3 text-sm">
                     <label htmlFor="terms" className="font-light text-gray-500 dark:text-gray-300">
                       I accept the <a className="font-medium text-primary-600 hover:underline dark:text-primary-500" href="#">Terms and Conditions</a>
@@ -112,7 +109,7 @@ export default function Register() {
                   Create an  admin account
                 </button>
                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                  Already have an account? <Link to="/login" className="font-medium text-primary-600 hover:underline dark:text-primary-500">Login here</Link>
+                  Already have an account? <Link to="/adminlogin" className="font-medium text-primary-600 hover:underline dark:text-primary-500">Login here</Link>
                 </p>
               </form>
             </div>

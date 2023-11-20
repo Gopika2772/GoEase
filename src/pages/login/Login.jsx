@@ -10,21 +10,22 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
-    try {
-      const response = await axios.post(`${baseurl}/login`, {
-        email: email,
-        password: password,
-      });
-
-      const userData = response.data;
-      window.sessionStorage.setItem('userData', JSON.stringify(userData));
-    } catch (err) {
-    
-      console.error(err.response.data);
-    }
+    axios.post(`${baseurl}/login`, {
+      email: email,
+      password: password,
+    }).then((res) => {
+      console.log(res.data[0]);
+      window.sessionStorage.setItem('userData', JSON.stringify(res.data[0]));
+      navigate('/landing');
+    }).catch((err) => {
+      console.log(err);
+    })
   };
-  
+  // const handleButtonClick = () => {
+
+  //   navigate('/landing');
+  // };
+
 
   return (
     <>
@@ -68,6 +69,7 @@ const Login = () => {
                 </div>
 
                 <button
+                  // onClick={handleButtonClick}
                   type="submit"
                   className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                 >

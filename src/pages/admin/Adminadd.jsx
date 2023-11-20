@@ -7,6 +7,7 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 
 
 export default function Adminadd() {
+    const navigate = useNavigate();
 
     const success = () => {
         confirmAlert({
@@ -21,6 +22,10 @@ export default function Adminadd() {
           ]
         });
       }; 
+
+      const onclose = () => {
+        navigate('/listflights'); 
+      };
 
       const error = () => {
         confirmAlert({
@@ -45,7 +50,7 @@ export default function Adminadd() {
     // const [data, setData] = useState([]);
 
 
-    const navigate = useNavigate();
+    
 
     const handleAddFlight = (e) => {
         e.preventDefault();

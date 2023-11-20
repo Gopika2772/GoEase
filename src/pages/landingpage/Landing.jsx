@@ -19,7 +19,7 @@ const Landing = () => {
     const ticketOptions = Array.from({ length: 60 }, (_, index) => index + 1);
 
     const navigate = useNavigate();
-
+    
     const handleSearch = (e) => {
         e.preventDefault();
 
@@ -31,7 +31,6 @@ const Landing = () => {
                 setResult(true);
             }).catch((err) => {
                 console.log(err);
-
             })
     };
 
@@ -46,12 +45,7 @@ const Landing = () => {
                     </div>
                 </div> : ""
             }
-            {/* <div className="h-screen w-full">
-                <div className="bg-cover bg-center h-screen landingimg" >
-                    <div className=" w-full h-1/3 text-8xl flex items-center justify-center"><h1>Go Ease</h1></div>
-
-                </div>
-            </div> */}
+           
             <div className="h-screen w-full">
                 <div className="flex items-center justify-center h-screen bg-sky-200">
                     <form onSubmit={(e) => handleSearch(e)} className="bg-white items-center justify-center w-5/6 h-1/3 rounded-lg p-4 flex flex-col">
