@@ -31,27 +31,48 @@ const adminRegister = (req, res) => {
         });
     });
 }
+// const adminLogin = (req, res) => {
+    
+//     const q = "SELECT * FROM  user WHERE email=? "
+
+//     db.query(q, [req.body.email], (err, data) => {
+
+//         if (err) {
+//             console.log(err);
+//             return res.status(500).json(err);
+//         }
+//         console.log(data.length);
+//         if (data.length === 0) return res.status(404).json("Admin not found!");
+
+//         const isPasswordCorrect = bcrypt.compareSync(
+//             req.body.password,
+//             data[0].password
+//         );
+//         if (!isPasswordCorrect) {
+//             return res.status(400).json("Wrong admin !");
+//         } else if (isPasswordCorrect) {
+//             return res.status(200).json(data)
+//         }
+//     });
+// };
+
 const adminLogin = (req, res) => {
-    const query = "SELECT * FROM  admin WHERE adminName=? OR email=? "
-    db.query(q, [req.body.email, req.body.password], (err, data) => {
-        if (err) {
-            console.log(err);
-            return res.status(500).json(err);
-        }
-        if (data.length === 0) return res.status(404).json("Admin not found!");
+    const q = "SELECT * FROM  admin WHERE email=? "
+    db.query(q, [req.body.email], (err, data) => {
+        if (err) return res.status(500).json(err);
+        if (data.length === 0) return res.status(404).json("admin not found!");
+
 
         const isPasswordCorrect = bcrypt.compareSync(
             req.body.password,
             data[0].password
         );
-        if (isPasswordCorrect(req.body.password)) {
-            res.status(200).json("Admin Logged in");
-        }
+        
 
-        if (!isPasswordCorrect){
-            console.log(err);
-            return res.status(400).json("Wrong  Admin username or password!");
-
+        if (!isPasswordCorrect) {
+            return res.status(400).json("Wrong admin!");
+        } else if (isPasswordCorrect) {
+            return res.status(200).json(data)
         }
     });
 };
@@ -143,15 +164,17 @@ const addFlight = (req, res) => {
 };
 
 const viewBookings = (req, res) => {
-    const flightNameFilter = req.query.flightName;
+    // const flightNameFilter = req.params.flightNameFilter;
     
-
-    let q = "SELECT * FROM bookings where flightName=?";
+    const { flightNameFilter } = req.params;
+    console.log(flightNameFilter);
+    const q = "SELECT * FROM bookings where flightName=?";
     db.query(q, [flightNameFilter], (err, data) => {
         if (err) {
             console.log(err);
             return res.status(500).json(err);
         }
+        console.log(data);
 
         if (data.length === 0) {
             return res.status(404).json("No bookings found for the given flight name.");
@@ -164,4 +187,4 @@ const viewBookings = (req, res) => {
 
 
 
-module.exports = { adminRegister, adminLogin, addFlight, viewBookings }
+module.exports = { adminRegister,adminLogin,  addFlight, viewBookings }

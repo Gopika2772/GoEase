@@ -58,12 +58,13 @@ const userLogin = (req, res) => {
     db.query(q, [req.body.email], (err, data) => {
         if (err) return res.status(500).json(err);
         if (data.length === 0) return res.status(404).json("User not found!");
-
+        console.log(data);
 
         const isPasswordCorrect = bcrypt.compareSync(
             req.body.password,
             data[0].password
         );
+        
 
         if (!isPasswordCorrect) {
             return res.status(400).json("Wrong username or password!");
@@ -136,7 +137,7 @@ const searchFlights = (req, res) => {
 
 const bookTicket = (req, res) => {
     const qCheckSeats = "SELECT noOfSeats FROM flights WHERE flightId = ?";
-    const qBookTicket = "INSERT INTO bookings (`userId`, `flightId`, `fromDestination`, `toDestination`, `noOfSeats`, `date`,`flightName`) VALUES (?, ?, ?, ?, ?, ?,?)";
+    const qBookTicket = "INSERT INTO bookings (`userId`, `flightId`, `fromDestination`, `toDestination`, `noOfSeats`, `date`,`flightName`,`time`) VALUES (?, ?, ?, ?, ?, ?,?,?)";
     const qUpdateSeats = "UPDATE flights SET noOfSeats = ? WHERE flightId = ?";
 
     const valuesCheckSeats = [req.body.flightId];
@@ -150,6 +151,7 @@ const bookTicket = (req, res) => {
         if (seatData.length === 0 || seatData[0].noOfSeats < req.body.noOfSeats) {
             return res.status(400).json("Not enough seats available for booking.");
         }
+        console.log(req.body.userId);
 
         const updatedSeats = seatData[0].noOfSeats - req.body.noOfSeats;
         const valuesBookTicket = [
@@ -159,7 +161,8 @@ const bookTicket = (req, res) => {
             req.body.toDestination,
             req.body.noOfSeats,
             req.body.date,
-            req.body.flightName
+            req.body.flightName,
+            req.body.time
         ];
 
         const valuesUpdateSeats = [updatedSeats, req.body.flightId];
