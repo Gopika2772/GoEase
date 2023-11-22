@@ -10,13 +10,23 @@ const Adminlogin = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    axios.post(`${baseurl}/adminlogin`, {
+    // axios.post(`${baseurl}/alogin`, {
+    //   email: email,
+    //   password: password,
+    // }).then((res) => {
+    //   console.log(res);
+    //   window.localStorage.setItem('userData', JSON.stringify(res.data[0]));
+    //   navigate('/landing');
+    // }).catch((err) => {
+    //   console.log(err);
+    // })
+    axios.post(`${baseurl}/alogin`, {
       email: email,
       password: password,
     }).then((res) => {
       console.log(res.data[0]);
-      window.sessionStorage.setItem('userData', JSON.stringify(res.data[0]));
-      navigate('/landing');
+      window.localStorage.setItem('adminData', JSON.stringify(res.data[0]));
+      navigate('/listflights');
     }).catch((err) => {
       console.log(err);
     })

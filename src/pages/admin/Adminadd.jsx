@@ -155,7 +155,7 @@ export default function Adminadd() {
                                         name="userName"
                                         id="userName"
                                         className="border-b border-gray-300 text-gray-900 sm:text-sm  focus:ring-0 focus:border-none  block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400"
-                                        placeholder="9:00 am"
+                                        placeholder="9:00:00"
                                         onChange={(e) => setTime(e.target.value)}
 
                                         required

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect,navigate } from 'react';
 import axios from 'axios';
 import { baseurl } from '../../util';
@@ -9,9 +8,12 @@ const Flights = () => {
   const [showResults, setShowResults] = useState(false);
 
   const handleFilter = () => {
-    axios.get(`${baseurl}/view?flightName=${flightNameFilter}`)
+// console.log(userdata.userId);
+
+    axios.get(`${baseurl}/view/${flightNameFilter}`)
       .then((response) => {
         setData(response.data);
+        console.log(response.data);
         setShowResults(true);
       })
       .catch((error) => {
@@ -41,10 +43,12 @@ const Flights = () => {
               <div>
           <button
             onClick={handleFilter}
+            
             className="bg-green-500 text-white px-4 py-2 rounded-full focus:outline-none mt-4"
           >
             Go
           </button>
+
         </div>
 
         {/* Add Flights Button */}
@@ -74,7 +78,7 @@ const Flights = () => {
                   </div>
                   <div className="flex flex-col">
                     <div className='text-2xl font-bold mb-2'>Date</div>
-                    <div>{booking.date}</div>
+                    <div>{booking.date.slice(0,10)}</div>
                   </div>
                   <div className="flex flex-col">
                     <div className='text-2xl font-bold mb-2'>Time</div>
@@ -105,3 +109,4 @@ const Flights = () => {
 };
 
 export default Flights;
+

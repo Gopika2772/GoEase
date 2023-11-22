@@ -15,7 +15,7 @@ const Login = () => {
       password: password,
     }).then((res) => {
       console.log(res.data[0]);
-      window.sessionStorage.setItem('userData', JSON.stringify(res.data[0]));
+      window.localStorage.setItem('userData', JSON.stringify(res.data[0]));
       navigate('/landing');
     }).catch((err) => {
       console.log(err);

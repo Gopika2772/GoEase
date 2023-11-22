@@ -47,7 +47,7 @@ const Landing = () => {
             }
            
             <div className="h-screen w-full">
-                <div className="flex items-center justify-center h-screen bg-sky-200">
+                <div className="flex items-center justify-center h-screen  bg-sky-200">
                     <form onSubmit={(e) => handleSearch(e)} className="bg-white items-center justify-center w-5/6 h-1/3 rounded-lg p-4 flex flex-col">
                         <div className='flex w-full' >
                             {/* First Search Input */}
@@ -120,6 +120,7 @@ const Landing = () => {
                             </div>
                         </div>
                         <button
+                        
                             className=" bg-blue-500 mt-6 text-white px-4 py-2 rounded-full focus:outline-none"
                         >
                             Search

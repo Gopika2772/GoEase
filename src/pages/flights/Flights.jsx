@@ -7,7 +7,7 @@ import { baseurl } from '../../util';
 
 const Flights = ({ data, ticket }) => {
   const navigate = useNavigate();
-  const userdata = window.sessionStorage.getItem('userData');
+  const userdata = JSON.parse(localStorage.getItem('userData'));
   console.log(userdata);
 
   useEffect(() => {
@@ -60,6 +60,7 @@ const Flights = ({ data, ticket }) => {
     });
   };
   const handleBookFlight = (flight) => {
+console.log(flight);
 
     axios.post(`${baseurl}/bookTicket`, {
       userId: userdata.userId,
@@ -68,7 +69,8 @@ const Flights = ({ data, ticket }) => {
       toDestination: flight.flightTo,
       noOfSeats: ticket,
       date: flight.flightDate.slice(0, 10),
-      flightName: flight.flightName
+      flightName: flight.flightName,
+      time:flight.flightTime
     }).then((res) => {
       console.log(res);
       success();
@@ -82,7 +84,7 @@ const Flights = ({ data, ticket }) => {
   console.log(data);
 
   return (
-    <div className="flex items-center justify-center h-1/2 bg-sky-200">
+    <div className="flex items-center justify-center h-1/2 bg-sky-200 pb-10">
       <div className="bg-white w-5/6 h-1/5 rounded-lg p-4 flex flex-col h-auto">
         {data.map((flight, index) => (
           <div key={index} className="flex flex-row p-4 w-full border border-gray-300 rounded-lg m-2   items-center justify-evenly">
